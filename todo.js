@@ -41,13 +41,22 @@ firebase.auth().onAuthStateChanged(async function(user) {
     })
 
     // Show only my to-dos
-    let querySnapshot = await db.collection('todos').where('userId', '==', user.uid).get()
-    console.log(`Number to todos in collection: ${querySnapshot.size}`)
+    // let querySnapshot = await db.collection('todos').where('userId', '==', user.uid).get()
+    // console.log(`Number to todos in collection: ${querySnapshot.size}`)
 
-    let todos = querySnapshot.docs
+    // let todos = querySnapshot.docs
+
+    let response = await fetch(`http://localhost:8888/.netlify/functions/get_todos?userId=3MZ53tjaRHP9xurWlduGdSh5oiT2=${user.uid}`)
+    let todos = await response.json()
+
+
     for (let i=0; i<todos.length; i++) {
-      let todoId = todos[i].id
-      let todo = todos[i].data()
+      // let todoId = todos[i].id
+      // let todo = todos[i].data()
+      // let todoText = todo.text
+
+      let todo = todos[i]
+      let todoId = todo.id
       let todoText = todo.text
 
       document.querySelector('.todos').insertAdjacentHTML('beforeend', `
